@@ -1,0 +1,31 @@
+#include "employees.h"
+#include <iostream>
+#include <string>
+
+int main(int argc, char* argv[]){
+	std::string command;
+	EmployeesArray array;
+	while (command.compare("exit") != 0) {
+		std::cin >> command;
+		if (command.compare("load") == 0) {
+			std::cout << "load\n";
+		} else if (command.compare("list") == 0) {
+			std::cout << array << "\n";
+		} else if (command.compare("add") == 0) {
+			int type;
+			std::cin >> type;
+			if (type == 1) {
+				SalesManager* e = new SalesManager;
+				std::cin >> *e;
+				array.add(e);
+			} else if (type == 2) {
+				Developer* e = new Developer;
+				std::cin >> *e;
+				array.add(e);
+			}
+		} else if (command.compare("save") == 0) {
+			
+		} 
+	}
+	return 0;
+}

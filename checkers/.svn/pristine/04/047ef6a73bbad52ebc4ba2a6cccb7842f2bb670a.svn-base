@@ -1,0 +1,23 @@
+#include "Test.h"
+#include <iostream>
+
+Test::Test() {
+	failedNum = 0;
+	totalNum = 0;
+}
+
+void Test::check(bool expr, const char *func, const char *filename, int lineNum) {
+	if (!expr) {
+		std::cout << "error in file: " << filename << ", func: " << func << ", line:" << lineNum << "\n";
+		failedNum++;
+	}
+	totalNum++;
+}
+
+void Test::showFinalResult() {
+	if (failedNum == 0) {
+		std::cout << "Everything is correct: " << totalNum << "/" << totalNum;
+	} else {
+		std::cout << totalNum - failedNum << " out of " << totalNum << " correct" << "\n";
+	}
+}

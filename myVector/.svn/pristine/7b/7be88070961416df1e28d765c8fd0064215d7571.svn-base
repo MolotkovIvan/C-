@@ -1,0 +1,120 @@
+#ifndef _MY_VECTOR_H_INCLUDE
+#define _MY_VECTOR_H_INCLUDE
+
+#include <cstddef>
+#include <iostream>
+
+template <typename T>
+class my_vector {
+public: // methods
+    friend std::ostream& operator<<(std::ostream& os, my_vector<T>& v) {
+        for (std::size_t i = 0; i < v.size(); i++) {
+            os << "<" << v._data[i] << "> "; 
+        }
+        return os;        
+    }
+
+    my_vector() {
+        _sz = 0;
+        _cp = 2;
+        _data = new T[2];
+    }
+    
+    my_vector(std::size_t size) {
+        _sz = size;
+        _cp = size;
+        _data = new T[size];
+    }
+
+    my_vector(my_vector<T>& v) {
+        _sz = v._sz;
+        _cp = v._cp;
+        _data = new T[_sz];
+        for (std::size_t i = 0; i < _sz; i++) {
+            _data[i] = v._data[i];
+        }
+    }
+
+    ~my_vector() {
+        delete [] _data;    
+    }
+
+    T operator[](std::size_t index) const {
+        return _data[index];
+    }
+
+    T& operator[](std::size_t index) {
+        return _data[index];        
+    }
+
+    std::size_t size() const {
+        return _sz;
+    }
+    
+    std::size_t capacity() const {
+        return _cp;
+    }
+    bool empty() {
+        return _sz == 0;
+    }
+
+    void reserve(std::size_t new_capacity) {
+        if (new_capacity > _cp) {
+            T* buf = new T[_cp];
+            for (std::size_t i = 0; i < _cp; i++) buf[i] = _data[i];
+            delete [] _data;
+            _data = new T[new_capacity];
+            for (std::size_t i = 0; i < _cp; i++) _data[i] = buf[i];
+            delete [] buf;
+            _cp = new_capacity;
+        }
+    }
+
+    void resize(std::size_t size) {
+        if (size > _cp) {
+            if (_cp*2 < size) {
+                reserve(size);
+            } else {
+                reserve(_cp*2);
+            }
+        }
+        _sz = size;        
+    }
+
+    void push_back(T value) {
+        if (_sz == _cp) {
+            reserve(_cp*2);
+        }
+        _data[_sz] = value;
+        _sz++;
+    }
+    
+    void pop_back() {
+        _sz--;
+    }
+
+    void insert(std::size_t index, T value) {
+        if (_sz == _cp) {
+            reserve(_cp*2);
+        }
+        T* buf = new T[_sz + 1];
+        for (std::size_t i = index; i < _sz; i++) buf[i+1] = _data[i];
+        for (std::size_t i = index + 1; i < _sz + 1; i++) _data[i] = buf[i];
+        delete [] buf;
+        _data[index] = value;
+        _sz++;
+    }
+    
+    void erase(std::size_t index) {
+        for (std::size_t i = index; i < _sz; i++) {
+            _data[i] = _data[i+1];
+        }   
+        _sz--;        
+    }
+private: // fields
+    std::size_t _sz, _cp;
+    T *_data;
+};
+
+
+#endif

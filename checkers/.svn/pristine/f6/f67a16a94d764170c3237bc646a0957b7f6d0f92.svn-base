@@ -1,0 +1,22 @@
+#ifndef TEST_H
+#define TEST_H
+
+#include <cstdio>
+#include <cstddef>
+
+#define DO_CHECK(expr) \
+check(expr, __func__, __FILE__, __LINE__)
+
+class Test {
+protected:
+	static int failedNum;
+	static int totalNum;
+public:
+  Test();
+  
+  void check(bool expr, const char *func, const char *filename, int lineNum);
+  void showFinalResult();
+  virtual void runAllTests();
+};
+
+#endif
